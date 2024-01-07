@@ -13,7 +13,7 @@ library StacketLibrary {
     }
 
     function isReady(DIPStacket memory stacket) internal view returns (bool) {
-        // check if the stacket is ready to be executed
+        // check if the stacket is ready to be executed      
         return true;
     }
 
