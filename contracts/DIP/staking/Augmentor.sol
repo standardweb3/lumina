@@ -1,15 +1,22 @@
 pragma solidity ^0.8.0;
 
 import {TransferHeler} from "../libraries/TransferHelper.sol";
+import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract Augmentor {
+contract Augmentor is ReentrancyGuard {
     // state
-    address public lum;
+    address public LUM;
+    address public WETH;
+
+
+    // events
+    event StakeCrypto(address indexed asset, address indexed account, uint256 amount);
+    event UnstakeCrypto(address indexed asset, address indexed account, uint256 amount);
 
 
     // functions
 
-    function stake(address asset, uint256 amount) external returns (uint256 point) {
+    function stake(address asset, uint256 amount) nonReentrant external returns (bool) {
         // check if the asset pair between ETH exists in exchange
         // if not, revert with error
     
@@ -17,19 +24,20 @@ contract Augmentor {
         TransferHelper.safeTransferFrom(asset, msg.sender, address(this), amount);
         
         
-        // mint point
-    
-        // return point
+
+        emit StakeCrypto(WETH, msg.sender, amount);
+        return true;
     }
 
-    function stakeETH() external payable returns (uint256 point) {
+    function stakeETH() nonReentrant external payable returns (bool)  {
         // stake asset
         
-        // mint point
         // return point
+        emit StakeCrypto(WETH, msg.sender, msg.value);
+        return true;
     }
 
-    function unstake(address asset, uint256 amount) external returns (uint256 point) {
+    function unstake(address asset, uint256 amount) nonReentrant external returns (bool)  {
         // check if the asset pair between ETH exists in exchange
         // if not, revert with error
     
@@ -37,8 +45,7 @@ contract Augmentor {
         TransferHelper.safeTransfer(asset, msg.sender, amount);
         
         
-        // burn point
-    
+        emit UnstakeCrypto(asset, msg.sender, amount);
         // return point
     }
 
@@ -46,10 +53,9 @@ contract Augmentor {
         // get Account balance of an asset
         uint256 balance = IERC20(asset).balanceOf(account);
         // get market rate of an asset in exchange
-        uint256 price = IEngine(engine).getPrice(asset, lum);
+        uint256 price = IEngine(engine).getPrice(asset, LUM);
         return balance * price / 1e8;
     }
 
-    // events
 
 }
