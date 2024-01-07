@@ -1,5 +1,5 @@
 {
-  "name": "@standardweb3/v2-core",
+  "name": "@luminabridge/client",
   "description": "core smart contracts for standard protocol v2",
   "license": "BUSL-1.1",
   "publishConfig": {
