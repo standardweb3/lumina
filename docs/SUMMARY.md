@@ -1,7 +1,7 @@
 # Table of contents
 
 * [✨ Lumina](README.md)
-* [🔶 $LUM](usdlum.md)
+* [🔶 $LUM](lum.md)
 
 ## 🪙 Staking Guides
 
