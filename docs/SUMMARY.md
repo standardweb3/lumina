@@ -2,6 +2,7 @@
 
 * [✨ Lumina](README.md)
 * [🔶 $LUM](lum.md)
+* [Roadmap](roadmap.md)
 
 ## 🪙 Staking Guides
 
