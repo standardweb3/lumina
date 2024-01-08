@@ -17,5 +17,5 @@ contract MNM {
     // events
 
     // functions
-    function 
+    //function 
 }

@@ -12,7 +12,7 @@ library StacketLibrary {
         address to;
     }
 
-    function isReady(DIPStacket memory stacket) internal view returns (bool) {
+    function isReady(DIPStacket memory stacket) internal pure returns (bool) {
         // check if the stacket is ready to be executed      
         return true;
     }

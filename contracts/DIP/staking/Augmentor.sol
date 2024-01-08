@@ -1,12 +1,15 @@
 pragma solidity ^0.8.0;
 
-import {TransferHeler} from "../libraries/TransferHelper.sol";
+import {TransferHelper} from "../libraries/TransferHelper.sol";
 import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import {IEngine} from "../../safex/interfaces/IEngine.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Augmentor is ReentrancyGuard {
     // state
     address public LUM;
     address public WETH;
+    address public engine;
 
 
     // events
@@ -53,7 +56,7 @@ contract Augmentor is ReentrancyGuard {
         // get Account balance of an asset
         uint256 balance = IERC20(asset).balanceOf(account);
         // get market rate of an asset in exchange
-        uint256 price = IEngine(engine).getPrice(asset, LUM);
+        uint256 price = IEngine(engine).mktPrice(asset, LUM);
         return balance * price / 1e8;
     }
 
