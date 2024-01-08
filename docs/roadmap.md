@@ -1,28 +1,28 @@
 # Roadmap
 
-## Jan 2023
+## Jan 2024
 
 DIP implementation in Solidity
 
-## Feb 2023
+## Feb 2024
 
 DIP contract audit
 
 Lumina client implementation&#x20;
 
-## Mar 2023
+## Mar 2024
 
 Lumina client audit
 
 Lumina validator recruitment
 
-## Apr 2023&#x20;
+## Apr 2024
 
 Lumina Testnet launch&#x20;
 
 Lumina Mainnet countdown
 
-## May 2023
+## May 2024
 
 Lumina Mainnet launch
 
