@@ -2,6 +2,7 @@ library StacketLibrary {
     struct DIPStacket {
         uint32 chainId;
         uint16 confirmations;
+        address author;
         bytes transport;
         uint256 timestamp;
         ATTPStacket payload;

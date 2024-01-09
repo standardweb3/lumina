@@ -17,7 +17,6 @@ interface IAugment {
 }
 
 contract Augmentor is ReentrancyGuard {
-    // state
 
     /// address of LUM
     address public LUM;
@@ -27,6 +26,14 @@ contract Augmentor is ReentrancyGuard {
     address public engine;
     /// address of augmented token impl
     address public impl;
+    mapping (address => mapping(address => uint256)) balances;
+
+    struct Delegator {
+        uint32 id;
+        string name;
+        mapping (address => uint256) staked;
+    }
+    mapping (address => Delegator) delegators;
 
     // events
     event StakeCrypto(
@@ -45,6 +52,8 @@ contract Augmentor is ReentrancyGuard {
     error PairDoesNotExist(address asset, address LUM);
     error InvalidAccess(address sender, address owner);
     error AugmentAlreadyExists(address original, address augment);
+    error AmountExceedsBalance(uint256 amount, uint256 balance);
+    error InvalidDelegator(address delegateTo);
 
     // functions
 
@@ -73,10 +82,12 @@ contract Augmentor is ReentrancyGuard {
         if (!_augmentExists(asset)) {
             address augment = _createAugment(asset);
             // mint asset to recipient
+            balances[recipient][asset] += amount;
             IAugment(augment).mint(recipient, amount);
         } else {
             address augment = _predictAddress(asset);
             // mint asset to recipient
+            balances[recipient][asset] += amount;
             IAugment(augment).mint(recipient, amount);
         }
 
@@ -91,8 +102,44 @@ contract Augmentor is ReentrancyGuard {
         IWETH(WETH).deposit{value: msg.value}();
         // stake asset
         stake(WETH, msg.value, recipient);
-        // return point
         emit StakeCrypto(WETH, msg.sender, msg.value, recipient);
+        return true;
+    }
+
+    function delegate(
+        address asset,
+        address delegateTo,
+        uint256 amount
+    ) external returns (bool) {
+        // check if delegator exists
+        Delegator storage delegator = delegators[delegateTo];
+        if(delegator.id == 0) {
+            revert InvalidDelegator(delegateTo);
+        }
+
+        delegator.staked[asset] += amount;
+        balances[msg.sender][asset] -= amount;
+        // TODO: reorder delegator priority
+
+        return true;
+    }
+
+    function undelegate(
+        address asset,
+        address delegateTo,
+        uint256 amount
+    ) external returns (bool) {
+         // check if delegator exists
+        Delegator storage delegator = delegators[delegateTo];
+        if(delegator.id == 0) {
+            revert InvalidDelegator(delegateTo);
+        }
+
+        delegator.staked[asset] -= amount;
+        balances[msg.sender][asset] += amount;
+        // TODO: reorder delegator priority
+        // IDelegator.reorder(delegateTo, delegator.staked[asset])
+
         return true;
     }
 
@@ -100,17 +147,19 @@ contract Augmentor is ReentrancyGuard {
         address asset,
         uint256 amount
     ) external nonReentrant returns (bool) {
-        // check if the asset pair between ETH exists in exchange
-        // if not, revert with error
+        // check if the amount exceeds balance
+        if (amount > balances[msg.sender][asset]) {
+            // if not, revert with error
+            revert AmountExceedsBalance(amount, balances[msg.sender][asset]);
+        }
 
         // unstake
         TransferHelper.safeTransfer(asset, msg.sender, amount);
-
         emit UnstakeCrypto(asset, msg.sender, amount);
-        // return point
+        return true;
     }
 
-    function getPoint(
+    function getBalance(
         address asset,
         address account
     ) external view returns (uint256 point) {
@@ -121,7 +170,7 @@ contract Augmentor is ReentrancyGuard {
         return (balance * price) / 1e8;
     }
 
-    function _augmentExists(address original) internal returns (bool) {
+    function _augmentExists(address original) internal view returns (bool) {
         address augment = _predictAddress(original);
 
         // Check if the address has code
