@@ -1,5 +1,8 @@
 pragma solidity ^0.8.17;
 
+
+import {TransferHelper} from "../../libraries/TransferHelper.sol";
+
 library DelegatorLibrary {
     struct State {
         /// delegator ids
@@ -7,25 +10,57 @@ library DelegatorLibrary {
         /// delegators
         mapping(uint32 => address) delegators;
         /// delegator points
-        mapping(uint32 => uint256) staked;
+        mapping(uint32 => uint256) delegated;
         /// delegated total points
         uint256 total;
-        /// delegator list in random order to shuffle relay author
-        mapping(uint32 => uint32) list;
-        /// queue head
-        uint32 lHead;
-        /// delegator count
+        /// delegator array
+        uint32[20] dArr;
         uint32 dCount;
+        /// confisticated until
+        mapping(uint32 => uint64) confiscated;
+        address LUM;
     }
 
     // errors
     error InvalidDelegator(address delegateTo);
+    error AlreadyOccupied(address delegator, uint32 dId);
 
     function register(State storage self) internal {
+        // check occupation
+        if(self.dIds[msg.sender] != 0) {
+            revert AlreadyOccupied(msg.sender, self.dIds[msg.sender]);
+        }
+
+        // Transfer required LUMs to register as validator
+        // TODO: set point decimals
+        TransferHelper.safeTransferFrom(self.LUM, msg.sender, address(this), 32e18);
+
+        // Add delegator in the list
         self.dCount += 1;
         self.dIds[msg.sender] = self.dCount;
-        self.list[self.dCount] = self.lHead;
-        self.lHead = self.dCount;
+        self.delegated[self.dCount] += 32e18;
+        _reorder(self, self.dCount);
+    }
+
+    function _reorder(State storage self, uint32 newId) internal {
+        for (uint256 i = 19; i > 0; i--) {
+            if(self.delegated[self.dArr[i]] >= self.delegated[newId]) {
+                if(i==19) {
+                    return;
+                } else {
+                    self.dArr[i+1] = newId;
+                    return;
+                }
+            }
+            if(self.delegated[self.dArr[i]] < self.delegated[newId]) {
+                if(i==19) {
+                    self.dArr[i] = newId;
+                } else {
+                    self.dArr[i+1] = self.dArr[i];
+                    self.dArr[i] = newId;
+                }
+            }
+        }
     }
 
     function delegate(
@@ -39,9 +74,9 @@ library DelegatorLibrary {
             revert InvalidDelegator(delegateTo);
         }
 
-        self.staked[id] += amount;
+        self.delegated[id] += amount;
         self.total += amount;
-
+        _reorder(self, id);
         return true;
     }
 
@@ -56,15 +91,15 @@ library DelegatorLibrary {
             revert InvalidDelegator(delegateTo);
         }
 
-        self.staked[id] -= amount;
+        self.delegated[id] -= amount;
         self.total -= amount;
-
+        _reorder(self, id);
         return true;
     }
 
     function authorize(
         State storage self
-    ) internal returns (address author, address[] memory validators) {
+    ) internal view returns (address author, address validator1, address validator2) {
         // Get the current block hash
         bytes32 hash = blockhash(block.number - 1);
 
@@ -73,6 +108,7 @@ library DelegatorLibrary {
 
         // Extract 4-byte chunks from bytes32 and convert to uint32
         uint32[3] memory chunks;
+        address[] memory validators;
         assembly {
             mstore(chunks, hash)
             mstore(add(chunks, 32), shr(32, hash))
@@ -80,42 +116,25 @@ library DelegatorLibrary {
             //mstore(add(chunks, 96), shr(96, hash))
             //mstore(add(chunks, 128), shr(128, hash))
         }
+       
+        validators = new address[](3);
 
-        // get author
-        author = self.delegators[chunks[0] % self.dCount];
-        // initialize the validators array with a length of 2
-        uint32[] memory dIdQ = new uint32[](2);
-        validators = new address[](2);
-
-        // push validators into the array
-        for (uint32 i = 0; i < 2; i++) {
-            uint32 id = self.lHead;
-            uint32 last = 0;
-            // reuse chunks[0] for storing index
-            chunks[0] = chunks[i + 1] % self.dCount;
-
-            // traverse to the given index then get delegator id
-            for (uint32 j = 0; j < chunks[0] - 1; j++) {
-                last = id;
-                id = self.list[id];
-            }
-            // take out picked id from list
-            self.list[last] = self.list[id];
-            self.list[id] = 0;
-            dIdQ[i] = id;
-            validators[i] = self.delegators[id];
+        // get validators in the array
+        for (uint32 i = 0; i < 3; i++) {
+            validators[i] = self.delegators[chunks[i] % 20];
         }
 
-        // shuffle picked indices by pushing front to the list
-        for (uint32 i = 0; i < dIdQ.length; i++) {
-            self.list[dIdQ[i]] = self.lHead;
-            self.lHead = dIdQ[i];
-        }
-
-        return (author, validators);
+        return (validators[0], validators[1], validators[2]);
     }
 
-    function confisticate() internal {
-        // slash points on validator
+    function slash(State storage self, address delegator) internal {
+        // slash points on delegator
+        self.delegated[self.dIds[delegator]] = 0;
+
+        // distribute slashed LUM to reporter
+
+
+        // confiscate delegator for 3 months
+
     }
 }

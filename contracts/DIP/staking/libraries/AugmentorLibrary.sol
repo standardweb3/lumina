@@ -4,6 +4,7 @@ pragma solidity ^0.8.17;
 import {CloneFactory} from "./CloneFactory.sol";
 import {Augment} from "../Augment.sol";
 import {TransferHelper} from "../../libraries/TransferHelper.sol";
+import {IWETH} from "../../../mock/interfaces/IWETH.sol";
 import {IEngine} from "../../../safex/interfaces/IEngine.sol";
 
 interface IAugment {
@@ -151,7 +152,12 @@ library AugmentorLibrary {
         // unstake
         self.balances[msg.sender][asset] -= amount;
         self.points[msg.sender] -= price * amount / 1e8;
+        if(asset == self.WETH) {
+            IWETH(self.WETH).withdraw(amount);
+            payable(msg.sender).transfer(amount);
+        } else {
         TransferHelper.safeTransfer(asset, msg.sender, amount);
+        }
     }
 
     
