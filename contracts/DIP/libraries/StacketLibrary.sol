@@ -1,4 +1,4 @@
-library StacketLibrary {
+library PacketLibrary {
     struct DIPStacket {
         uint32 chainId;
         uint16 confirmations;

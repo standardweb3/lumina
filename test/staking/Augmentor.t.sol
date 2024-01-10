@@ -114,4 +114,46 @@ contract StakeTest is BaseSetup {
         // check total point unclaimed
         // check total point locked
     }
+
+    function testArraySum() public {
+        uint256[20] memory numbers;
+        uint256 a = 0;
+        for (uint256 i = 0; i < 20; i++) {
+            numbers[i] = a;
+            a += 100e18;
+        }
+        uint256 sum = 0;
+
+        for (uint256 i = 0; i < numbers.length; i++) {
+            sum += numbers[i];
+            console.log("Sum", sum);
+        }
+
+        console.log("Sum", sum);
+    }
+
+    function testBlockHashChunksAndNumber() public {
+         // Get the current block hash
+        
+        bytes32 hash = 0x7a4a6fc947f7707899f4e4f562819807f725af34261f272e85165c7859647fe6;
+
+
+        // Ensure that the block hash is not zero
+        require(hash != 0, "Block hash is zero");
+
+        // Extract 4-byte chunks from bytes32 and convert to uint32
+        uint32[5] memory chunks;
+        assembly {
+            mstore(chunks,         hash)
+            mstore(add(chunks, 32), shr(32, hash))
+            mstore(add(chunks, 64), shr(64, hash))
+            mstore(add(chunks, 96), shr(96, hash))
+            mstore(add(chunks, 128), shr(128, hash))
+        }
+
+        for(uint256 i=0; i<chunks.length; i++) {
+            console.log("chunk", i, chunks[i] % 20);
+        }
+
+    }
 }
