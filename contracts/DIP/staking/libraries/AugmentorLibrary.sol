@@ -329,7 +329,7 @@ library AugmentorLibrary {
         }
 
         // get author
-        author = self.delegators[chunks[0] % self.dCount];
+        author = self.delegators[chunks[0] % self.lCount];
         // initialize the validators array with a length of 2
         uint32[] memory dIdQ = new uint32[](2);
         validators = new address[](2);
@@ -339,7 +339,7 @@ library AugmentorLibrary {
             uint32 id = self.lHead;
             uint32 last = 0;
             // reuse chunks[0] for storing index
-            chunks[0] = chunks[i + 1] % self.dCount;
+            chunks[0] = chunks[i + 1] % self.lCount;
 
             // traverse to the given index then get delegator id
             for (uint32 j = 0; j < chunks[0] - 1; j++) {
