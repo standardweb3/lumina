@@ -242,22 +242,22 @@ library AugmentorLibrary {
             return;
         } else {
             // if delegated amount is below minDelegated, stay out of the list
-            if (self.delegated[id] < self.minDelegated) {
+            if (self.delegated[id] <= self.minDelegated) {
                 // if the id is already included, take it out.
                 if (self.enlisted[id]) {
                     uint32 head = self.lHead;
                     uint32 last = 0;
-                    if(head == id) {
+                    if (head == id) {
                         self.lHead = self.list[head];
                         self.list[head] = 0;
-                        self.enlisted[id] = false;
+                        self.enlisted[head] = false;
                         return;
                     }
-                    while(head != 0) {
-                        if(head == id) {
+                    while (head != 0) {
+                        if (head == id) {
                             self.list[last] = self.list[head];
                             self.list[head] = 0;
-                            self.enlisted[id] = false;
+                            self.enlisted[head] = false;
                             return;
                         } else {
                             last = head;
@@ -266,6 +266,27 @@ library AugmentorLibrary {
                     }
                 } else {
                     return;
+                }
+            } else {
+                // find mindelegated id and remove
+                uint32 head = self.lHead;
+                uint32 last = 0;
+                if (self.delegated[head] == self.minDelegated) {
+                    self.lHead = self.list[head];
+                    self.list[head] = 0;
+                    self.enlisted[head] = false;
+                    return;
+                }
+                while (head != 0) {
+                    if (self.delegated[head] == self.minDelegated) {
+                        self.list[last] = self.list[head];
+                        self.list[head] = 0;
+                        self.enlisted[head] = false;
+                        return;
+                    } else {
+                        last = head;
+                        head = self.list[head];
+                    }
                 }
             }
         }

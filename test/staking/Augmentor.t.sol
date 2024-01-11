@@ -115,23 +115,6 @@ contract StakeTest is BaseSetup {
         // check total point locked
     }
 
-    function testArraySum() public {
-        uint256[20] memory numbers;
-        uint256 a = 0;
-        for (uint256 i = 0; i < 20; i++) {
-            numbers[i] = a;
-            a += 100e18;
-        }
-        uint256 sum = 0;
-
-        for (uint256 i = 0; i < numbers.length; i++) {
-            sum += numbers[i];
-            console.log("Sum", sum);
-        }
-
-        console.log("Sum", sum);
-    }
-
     function testBlockHashChunksAndNumber() public {
          // Get the current block hash
         
@@ -156,4 +139,16 @@ contract StakeTest is BaseSetup {
         }
 
     }
+}
+
+contract DelegateTest is BaseSetup {
+
+}
+
+contract AuthorshipTest is BaseSetup {
+
+}
+
+contract PenaltyTest is BaseSetup {
+
 }
