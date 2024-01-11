@@ -28,7 +28,7 @@ Lumina is an cross-chain intent platform where it enables users to earn the maxi
 
 ### Stake your assets, move derivatives everywhere, get $LUM as reward.
 
-Stake your native coins or tokens to augment into Lum assets, transfer to anywhere in blockchain.
+Stake your native coins or tokens to augment into Lum assets, transfer to any network across blockchains.
 
 Expand exposure to capital without permissions, and get $LUM as staking reward for keeping decentralized bridge.
 
