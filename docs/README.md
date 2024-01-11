@@ -10,7 +10,7 @@ Lumina is the first Byzantine Fault Tolerant bridge to augment assets across blo
 
 ### **No more wrapping.**
 
-
+<figure><img src=".gitbook/assets/no-more-wrapping.png" alt="" width="563"><figcaption></figcaption></figure>
 
 Get augmented assets only once as derivative by staking, transfer it to every chains.
 
