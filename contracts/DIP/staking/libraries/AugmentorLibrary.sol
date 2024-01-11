@@ -37,8 +37,17 @@ library AugmentorLibrary {
         mapping(uint32 => uint256) delegated;
         /// delegated total points
         uint256 total;
-        /// delegator array
-        uint32[20] dArr;
+        /// delegator list in arbitrary order to shuffle for authorship
+        mapping(uint32 => uint32) list;
+        /// delegator is in list
+        mapping(uint32 => bool) enlisted;
+        /// delegator index
+        uint256 minDelegated;
+        /// list head
+        uint32 lHead;
+        /// list cout
+        uint32 lCount;
+        /// delegator count
         uint32 dCount;
         /// confisticated until
         mapping(uint32 => uint64) confiscated;
@@ -197,40 +206,66 @@ library AugmentorLibrary {
     }
 
     // delegator functions
-
     function register(State storage self) internal {
         // check occupation
-        if(self.dIds[msg.sender] != 0) {
+        if (self.dIds[msg.sender] != 0) {
             revert AlreadyOccupied(msg.sender, self.dIds[msg.sender]);
         }
 
         // Transfer required LUMs to register as validator
         // TODO: set point decimals
-        TransferHelper.safeTransferFrom(self.LUM, msg.sender, address(this), 32e18);
+        TransferHelper.safeTransferFrom(
+            self.LUM,
+            msg.sender,
+            address(this),
+            32e18
+        );
 
         // Add delegator in the list
         self.dCount += 1;
         self.dIds[msg.sender] = self.dCount;
+        self.list[self.dCount] = self.lHead;
         self.delegated[self.dCount] += 32e18;
-        _reorder(self, self.dCount);
+        self.lHead = self.dCount;
+        _enlist(self, self.dCount);
     }
 
-    function _reorder(State storage self, uint32 newId) internal {
-        for (uint256 i = 19; i > 0; i--) {
-            if(self.delegated[self.dArr[i]] >= self.delegated[newId]) {
-                if(i==19) {
-                    return;
+    function _enlist(State storage self, uint32 id) internal {
+        if (self.lCount < 20) {
+            self.minDelegated = self.delegated[id] >= self.minDelegated
+                ? self.minDelegated
+                : self.delegated[id];
+            self.list[id] = self.lHead;
+            self.lHead = id;
+            self.lCount += 1;
+            self.enlisted[id] = true;
+            return;
+        } else {
+            // if delegated amount is below minDelegated, stay out of the list
+            if (self.delegated[id] < self.minDelegated) {
+                // if the id is already included, take it out.
+                if (self.enlisted[id]) {
+                    uint32 head = self.lHead;
+                    uint32 last = 0;
+                    if(head == id) {
+                        self.lHead = self.list[head];
+                        self.list[head] = 0;
+                        self.enlisted[id] = false;
+                        return;
+                    }
+                    while(head != 0) {
+                        if(head == id) {
+                            self.list[last] = self.list[head];
+                            self.list[head] = 0;
+                            self.enlisted[id] = false;
+                            return;
+                        } else {
+                            last = head;
+                            head = self.list[head];
+                        }
+                    }
                 } else {
-                    self.dArr[i+1] = newId;
                     return;
-                }
-            }
-            if(self.delegated[self.dArr[i]] < self.delegated[newId]) {
-                if(i==19) {
-                    self.dArr[i] = newId;
-                } else {
-                    self.dArr[i+1] = self.dArr[i];
-                    self.dArr[i] = newId;
                 }
             }
         }
@@ -253,7 +288,7 @@ library AugmentorLibrary {
         self.points[msg.sender] -= amount;
         self.delegated[id] += amount;
         self.total += amount;
-        _reorder(self, id);
+        _enlist(self, id);
         return id;
     }
 
@@ -270,13 +305,13 @@ library AugmentorLibrary {
         self.points[msg.sender] += amount;
         self.delegated[id] -= amount;
         self.total -= amount;
-        _reorder(self, id);
+        _enlist(self, id);
         return id;
     }
 
     function authorize(
         State storage self
-    ) internal view returns (address author, address validator1, address validator2) {
+    ) internal returns (address author, address[] memory validators) {
         // Get the current block hash
         bytes32 hash = blockhash(block.number - 1);
 
@@ -285,7 +320,6 @@ library AugmentorLibrary {
 
         // Extract 4-byte chunks from bytes32 and convert to uint32
         uint32[3] memory chunks;
-        address[] memory validators;
         assembly {
             mstore(chunks, hash)
             mstore(add(chunks, 32), shr(32, hash))
@@ -293,15 +327,39 @@ library AugmentorLibrary {
             //mstore(add(chunks, 96), shr(96, hash))
             //mstore(add(chunks, 128), shr(128, hash))
         }
-       
-        validators = new address[](3);
 
-        // get validators in the array
-        for (uint32 i = 0; i < 3; i++) {
-            validators[i] = self.delegators[chunks[i] % 20];
+        // get author
+        author = self.delegators[chunks[0] % self.dCount];
+        // initialize the validators array with a length of 2
+        uint32[] memory dIdQ = new uint32[](2);
+        validators = new address[](2);
+
+        // push validators into the array
+        for (uint32 i = 0; i < 2; i++) {
+            uint32 id = self.lHead;
+            uint32 last = 0;
+            // reuse chunks[0] for storing index
+            chunks[0] = chunks[i + 1] % self.dCount;
+
+            // traverse to the given index then get delegator id
+            for (uint32 j = 0; j < chunks[0] - 1; j++) {
+                last = id;
+                id = self.list[id];
+            }
+            // take out picked id from list
+            self.list[last] = self.list[id];
+            self.list[id] = 0;
+            dIdQ[i] = id;
+            validators[i] = self.delegators[id];
         }
 
-        return (validators[0], validators[1], validators[2]);
+        // shuffle picked indices by pushing front to the list
+        for (uint32 i = 0; i < dIdQ.length; i++) {
+            self.list[dIdQ[i]] = self.lHead;
+            self.lHead = dIdQ[i];
+        }
+
+        return (author, validators);
     }
 
     function slash(State storage self, address delegator) internal {
@@ -310,8 +368,6 @@ library AugmentorLibrary {
 
         // distribute slashed LUM to reporter for 1/8
 
-
         // confiscate delegator for 3 months
-
     }
 }

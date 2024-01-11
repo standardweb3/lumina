@@ -97,6 +97,10 @@ contract Augmentor is ReentrancyGuard {
         return true;
     }
 
-    // Penalty functions
+    // Stacket Author functions
+    function authorize() external {
+        _augmentor.authorize();
+    }
 
+    // Penalty functions
 }
