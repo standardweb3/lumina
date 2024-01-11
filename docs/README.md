@@ -24,12 +24,14 @@ Only you can claim back your original assets unlike other bridges with your pers
 
 <figure><img src=".gitbook/assets/intents.png" alt=""><figcaption></figcaption></figure>
 
-Lumina is an cross-chain intent platform where it enables users to earn the maximum benefit from minimum cost.&#x20;
+Lumina is an cross-chain intent platform where it enables users to earn the maximum benefit from minimum cost. Behold endless opportunities with cross-chain intents.&#x20;
 
 ### Stake your assets, move derivatives everywhere, get $LUM as reward.
 
-Stake your native coins or tokens to augment into Lum assets, transfer to any network across blockchains.
+<figure><img src=".gitbook/assets/staking.png" alt="" width="563"><figcaption></figcaption></figure>
 
-Expand exposure to capital without permissions, and get $LUM as staking reward for keeping decentralized bridge.
+Stake your native coins or ERC20 tokens to augment into Lum assets, transfer to any network across blockchains.
+
+Expand exposure to capital without permissioned bridges, and get $LUM as staking reward for keeping decentralized bridge.
 
 Always claim back your original asset with no worries in your personal account.
