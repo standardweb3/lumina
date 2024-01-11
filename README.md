@@ -10,19 +10,19 @@ Lumina is the first Byzantine Fault Tolerant bridge to augment assets across blo
 
 ### **No more wrapping.**
 
-<figure><img src=".gitbook/assets/no-more-wrapping.png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src="docs/.gitbook/assets/no-more-wrapping.png" alt="" width="563"><figcaption></figcaption></figure>
 
 Get augmented assets only once as derivative by staking, transfer it to every chains.
 
 ### Protect your assets from bridge hack with personal account.
 
-<figure><img src=".gitbook/assets/augmented (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="docs/.gitbook/assets/augmented (2).png" alt=""><figcaption></figcaption></figure>
 
 Only you can claim back your original assets unlike other bridges with your personal account. Stop from hackers stealing your wealth from hacking other wrapped assets in bridges.
 
 ### Lumina is an intent-centric cross-chain middleware.
 
-<figure><img src=".gitbook/assets/intents.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="docs/.gitbook/assets/intents.png" alt=""><figcaption></figcaption></figure>
 
 Lumina is an cross-chain intent platform where it enables users to earn the maximum benefit from minimum cost.&#x20;
 
