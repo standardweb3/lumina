@@ -10,9 +10,13 @@ Lumina is the first Byzantine Fault Tolerant bridge to augment assets across blo
 
 ### **No more wrapping.**
 
+
+
 Get augmented assets only once as derivative by staking, transfer it to every chains.
 
 ### Protect your assets from bridge hack with personal account.
+
+<figure><img src=".gitbook/assets/augmented (1).png" alt="" width="544"><figcaption></figcaption></figure>
 
 Only you can claim back your original assets unlike other bridges with your personal account. Stop from hackers stealing your wealth from hacking other wrapped assets in bridges.
 
