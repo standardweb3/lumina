@@ -22,7 +22,7 @@ Only you can claim back your original assets unlike other bridges with your pers
 
 ### Lumina is an intent-centric cross-chain middleware.
 
-<figure><img src=".gitbook/assets/intents.png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/intents2.png" alt=""><figcaption></figcaption></figure>
 
 Lumina is an cross-chain intent platform where it enables users to earn the maximum benefit from minimum cost. Behold endless opportunities with cross-chain intents.&#x20;
 
