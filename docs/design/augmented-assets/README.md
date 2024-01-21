@@ -12,10 +12,10 @@ Augmented assets are the next generation of interoperable asset primitive across
 
 It is far more secure to make unified wrapped token for all chains then provide liquidity for native assets than having each different wrapped token depending on from chain to another chain.
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1).png" alt="" width="563"><figcaption></figcaption></figure>
 
 Current wrapped tokens by bridges are only able to make duplex value transfer by lock-and-mint. They rely only on AMMs so liquidity is limited, make slippage where users get hurt with financial losses, have massive risks when wrapped tokens is oversupplied and claimed back for original asset, even the one who locks original asset can run away with the locked fund.&#x20;
 
-<figure><img src="../../.gitbook/assets/image (1) (1).png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1) (1) (1).png" alt="" width="563"><figcaption></figcaption></figure>
 
 Instead, Lumina locks asset first with segregating user's asset safely for multiplex value transfer. Only users can turn augmented asset to original asset. Augmented token liquidities are then provided in orderbook exchange, giving always the maximum amount of native asset in minimum cost. The liquidity does not affect the price of the augmented asset and can always be traded at the market rate without significant slippage.
