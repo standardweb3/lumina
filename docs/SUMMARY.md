@@ -18,8 +18,8 @@
 
 ## 🔐 Security
 
-* [Bug Bounty Program](security/bug-bounty-program.md)
 * [Audits](security/audits.md)
+* [Bug Bounty Program](security/bug-bounty-program.md)
 
 ## 📐 Design
 
