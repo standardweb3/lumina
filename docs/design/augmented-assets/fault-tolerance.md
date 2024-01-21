@@ -8,7 +8,7 @@ Lumina prioritizes the security of its assets through a robust augmentation mech
 
 ### Safe and Censorship-Resistant Lumina Assets
 
-Lumina upholds its censorship resistance while maintaining a vigilant stance against potential threats. As an augmented asset derived from an original asset, Lumina allows the freezing of its derived assets from hackers in the presence of suspicious activity without sacrificing censorship resistance of original asset. Lumina validators actively monitor the supply of augmented assets, promptly reporting any detected malicious activities to the community. This proactive approach enhances Lumina's resilience and ensures the safety of its assets in dynamic environments. Lumina currently bans North Korean hacker team Lazarus to operate Lumina assets.
+Lumina upholds its censorship resistance while maintaining a vigilant stance against potential threats. As an augmented asset derived from an original asset, Lumina allows the freezing of its derived assets from hackers in the presence of suspicious activity without sacrificing censorship resistance of original asset. Lumina validators actively monitor the supply of augmented assets, promptly reporting any detected malicious activities to the community. This proactive approach enhances Lumina's resilience and ensures the safety of its assets in dynamic environments. Lumina currently bans North Korean hacker team Lazarus' wallets to operate Lumina assets.
 
 ### Liquidity in a Decentralized Orderbook Exchange
 
