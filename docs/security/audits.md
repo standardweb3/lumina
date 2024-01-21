@@ -1,6 +1,6 @@
 # Audits
 
-Lumina's security audit is unique from other crypto projects. The team witnessed audit firms' mistakes on mixing reports with other projects, misleading security vulnerability exposure due to lack of understanding of the code, and unnecessary overpriced guidance. As a result, Lumina dev team mainly trusts its test codes to defend in every layer of its code, and asks professional pen-testers to break them. This way, more security vulnerabilities can be effectively found, and it gives full understanding of the code to pen-testers. Here are current partners for technical audits.
+Lumina's security audit is unique from other crypto projects. The team witnessed audit firms' mistakes on mixing reports with other projects, misleading security vulnerability exposure due to lack of understanding of the code, and unnecessary overpriced guidance. As a result, Lumina dev team mainly trusts its test codes to defend in every layer of its code, and asks professional pen-testers to break them. This way, more security vulnerabilities can be effectively found, and it gives full understanding of the code to pen-testers. Here is the current partner for technical audits.
 
 ## Zellic
 
