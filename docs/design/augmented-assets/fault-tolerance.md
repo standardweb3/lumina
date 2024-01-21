@@ -2,11 +2,13 @@
 
 ### Augmentation for Asset Protection
 
+<figure><img src="../../.gitbook/assets/augment3.png" alt=""><figcaption></figcaption></figure>
+
 Lumina prioritizes the security of its assets through a robust augmentation mechanism. Original assets before bridging are the asset that can be liquidated to cash in CEXes. Employing a sophisticated security protocol, Lumina safeguards original assets within user accounts. This proactive measure ensures a precise 1:1 ratio between augmented and original assets only done by asset owner, substantially minimizing the risk of arbitrary minting during bridge transactions. The intricately tied claiming process, specific to individual users, acts as a formidable defense against potential threats, especially in oversupply scenarios where hackers may attempt to manipulate the bridge. Lumina's stringent security measures establish a resilient and transparent ecosystem, empowering users to engage confidently in transactions without compromising the integrity of their assets. Continuous evaluation and adaptation of these security protocols remain paramount to stay ahead of emerging threats and maintain a robust defense against potential risks.
 
 ### Safe and Censorship-Resistant Lumina Assets
 
-Lumina upholds its censorship resistance while maintaining a vigilant stance against potential threats. As an augmented asset derived from an original asset, Lumina allows the freezing of its derived assets from hackers in the presence of suspicious activity without sacrificing censorship resistance of original asset. Lumina validators actively monitor the supply of augmented assets, promptly reporting any detected malicious activities to the community. This proactive approach enhances Lumina's resilience and ensures the safety of its assets in dynamic environments.
+Lumina upholds its censorship resistance while maintaining a vigilant stance against potential threats. As an augmented asset derived from an original asset, Lumina allows the freezing of its derived assets from hackers in the presence of suspicious activity without sacrificing censorship resistance of original asset. Lumina validators actively monitor the supply of augmented assets, promptly reporting any detected malicious activities to the community. This proactive approach enhances Lumina's resilience and ensures the safety of its assets in dynamic environments. Lumina currently bans North Korean hacker team Lazarus to operate Lumina assets.
 
 ### Liquidity in a Decentralized Orderbook Exchange
 
