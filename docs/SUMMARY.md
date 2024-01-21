@@ -3,6 +3,7 @@
 * [✨ Lumina](README.md)
 * [🔶 $LUM](lum/README.md)
   * [Proof of Stake (PoS)](lum/proof-of-stake-pos.md)
+  * [Restaking](lum/restaking.md)
   * [Inflation](lum/inflation.md)
   * [Membership](lum/membership.md)
 * [🛣 Roadmap](roadmap.md)
@@ -12,6 +13,7 @@
 * [Create Account](staking-guides/create-account.md)
 * [Stake Crypto](staking-guides/stake-crypto.md)
 * [Vote To Relayers](staking-guides/vote-to-relayers.md)
+* [Page](staking-guides/page.md)
 * [Claim Reward](staking-guides/claim-reward.md)
 
 ## 🌐 Relayer Guides
