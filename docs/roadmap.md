@@ -2,11 +2,11 @@
 
 ## Jan 2024
 
-DIP implementation in Solidity
+Omnygram implementation in Solidity
 
 ## Feb 2024
 
-DIP contract audit
+Omnygram contract audit
 
 Lumina client implementation&#x20;
 

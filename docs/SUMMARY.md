@@ -1,7 +1,10 @@
 # Table of contents
 
 * [✨ Lumina](README.md)
-* [🔶 $LUM](lum.md)
+* [🔶 $LUM](lum/README.md)
+  * [Proof of Stake (PoS)](lum/proof-of-stake-pos.md)
+  * [Inflation](lum/inflation.md)
+  * [Membership](lum/membership.md)
 * [🛣 Roadmap](roadmap.md)
 
 ## 🪙 Staking Guides
@@ -15,6 +18,8 @@
 
 * [Relayer Introduction](relayer-guides/relayer-introduction.md)
 * [Relayer Installation](relayer-guides/relayer-installation.md)
+* [Relayer Registration](relayer-guides/relayer-registration.md)
+* [Relayer Operation](relayer-guides/relayer-operation.md)
 
 ## 🔐 Security
 

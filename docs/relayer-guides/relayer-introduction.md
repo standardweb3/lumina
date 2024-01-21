@@ -1,5 +1,7 @@
 # Relayer Introduction
 
-Relayer is an external client to deliver the messages across blockchains. It was first introduced as Zone from Cosmos. It was supposed to be a sovereign chain made with Tendermint consensus to deliver cross-chain transactions in decentralized way between heterogeneous blockchains, but it now serves as an external client to deliver IBC standard messages between two Cosmos sovereign chains.&#x20;
+<figure><img src="../.gitbook/assets/peg2.png" alt="" width="563"><figcaption></figcaption></figure>
 
-Lumina's relayer follows the original vision of Cosmos Zone, but with more robust consensus to prevent 2/3 byzantine fault. Also, it extends the datagram standard to be adaptable to all kinds of cross-chain transaction format including IBC, XCMP, inscriptions, etc.
+Relayer is an external client to deliver the messages across blockchains. Its idea was first introduced as **Peg Zone** from Cosmos. It was supposed to be a sovereign chain made with Tendermint consensus to deliver cross-chain transactions in decentralized way between heterogeneous blockchains, but it now serves as an external client to deliver IBC standard messages between two Cosmos sovereign chains. Relayer now does not have any incentivization to maintain its node nor its decentralized consensus to remain honest. &#x20;
+
+Lumina's relayer follows the original vision of Cosmos Zone, but with more robust consensus to prevent 2/3 byzantine fault in its underlying technology, [Omnygram](../design/omnygram/). Also, it extends its datagram standard to be adaptable to all kinds of cross-chain transaction format including IBC, XCMP, inscriptions, etc.
