@@ -18,10 +18,10 @@
 
 ## 🌐 Relayer Guides
 
-* [Relayer Introduction](relayer-guides/relayer-introduction.md)
-* [Relayer Installation](relayer-guides/relayer-installation.md)
-* [Relayer Registration](relayer-guides/relayer-registration.md)
-* [Relayer Operation](relayer-guides/relayer-operation.md)
+* [Introduction](relayer-guides/introduction.md)
+* [Installation](relayer-guides/installation.md)
+* [Registration](relayer-guides/registration.md)
+* [Operation](relayer-guides/operation.md)
 
 ## 🔐 Security
 
