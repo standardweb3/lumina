@@ -13,7 +13,7 @@
 * [Create Account](staking-guides/create-account.md)
 * [Stake Crypto](staking-guides/stake-crypto.md)
 * [Vote To Relayers](staking-guides/vote-to-relayers.md)
-* [Page](staking-guides/page.md)
+* [Restake Crypto](staking-guides/restake-crypto.md)
 * [Claim Reward](staking-guides/claim-reward.md)
 
 ## 🌐 Relayer Guides
