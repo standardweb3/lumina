@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BUSL-1.1
+
 pragma solidity ^0.8.0;
 
 import {ReentrancyGuard} from "@openzeppelin/contracts/security/ReentrancyGuard.sol";
@@ -103,4 +105,11 @@ contract Augmentor is ReentrancyGuard {
     }
 
     // Penalty functions
+
+
+
+    // view functions
+    function augmentOf(address original) external view returns (address augment) {
+        return _augmentor.augmentOf(original);
+    }
 }

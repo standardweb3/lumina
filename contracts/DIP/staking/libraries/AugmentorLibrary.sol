@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BUSL-1.1
+
 pragma solidity ^0.8.17;
 
 import {CloneFactory} from "./CloneFactory.sol";
@@ -95,8 +97,8 @@ library AugmentorLibrary {
         // Build constructor args
         string memory symbol = IAugment(original).symbol();
         string memory name = IAugment(original).name();
-        symbol = string(abi.encodePacked("lum", symbol));
-        name = string(abi.encodePacked("lumina", name));
+        symbol = string(abi.encodePacked("Lum", symbol));
+        name = string(abi.encodePacked("Lumina ", name));
 
         bytes memory args = abi.encode(name, symbol, address(this));
 
@@ -390,5 +392,9 @@ library AugmentorLibrary {
         // distribute slashed LUM to reporter for 1/8
 
         // confiscate delegator for 3 months
+    }
+
+    function augmentOf(State storage self, address original) internal view returns (address augment) {
+        return _predictAddress(self, original);
     }
 }
