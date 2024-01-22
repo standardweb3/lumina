@@ -17,6 +17,11 @@ interface IAugment {
 }
 
 library AugmentorLibrary {
+    struct Relayer {
+        address account;
+        uint256 delegated;
+        bool isOnline;
+    }
     struct State {
         /// address of LUM
         address LUM;
@@ -28,29 +33,27 @@ library AugmentorLibrary {
         address impl;
         /// balances of augmented token
         mapping(address => mapping(address => uint256)) balances;
-        //// Delegator
-        /// points stacked after staking
+        /// points balance of stakers after staking
         mapping(address => uint256) points;
-        /// delegator ids
-        mapping(address => uint32) dIds;
-        /// delegators
-        mapping(uint32 => address) delegators;
-        /// delegator points
-        mapping(uint32 => uint256) delegated;
+        //// Relayer
+        /// relayer ids
+        mapping(address => uint32) rIds;
+        /// relayers
+        mapping(uint32 => Relayer) relayers;
         /// delegated total points
         uint256 total;
-        /// delegator list in arbitrary order to shuffle for authorship
+        /// relayer list in arbitrary order to shuffle for authorship
         mapping(uint32 => uint32) list;
-        /// delegator is in list
+        /// relayer is in list
         mapping(uint32 => bool) enlisted;
-        /// delegator index
+        /// minimum relayer delegation threshold to become a valid relayer
         uint256 minDelegated;
         /// list head
         uint32 lHead;
         /// list cout
         uint32 lCount;
-        /// delegator count
-        uint32 dCount;
+        /// relayer count
+        uint32 rCount;
         /// confisticated until
         mapping(uint32 => uint64) confiscated;
     }
@@ -60,10 +63,11 @@ library AugmentorLibrary {
     error InvalidAccess(address sender, address owner);
     error AugmentAlreadyExists(address original, address augment);
     error AmountExceedsBalance(uint256 amount, uint256 balance);
-    /// delegators
-    error InvalidDelegator(address delegateTo);
+    /// relayers
+    error InvalidRelayer(address delegateTo);
     error AlreadyOccupied(address delegator, uint32 dId);
     error AmountExceedsPoint(uint256 amount, uint256 point);
+    error NotRelayerAccount(address sender, address account);
 
     // functions
 
@@ -145,7 +149,9 @@ library AugmentorLibrary {
         address recipient
     ) internal {
         // check if the asset pair between ETH exists in exchange
-        uint256 price = IEngine(self.engine).mktPrice(asset, self.LUM);
+        uint256 price = asset == self.LUM
+            ? 1
+            : IEngine(self.engine).mktPrice(asset, self.LUM);
 
         // if not, revert with error
         if (price == 0) {
@@ -159,6 +165,14 @@ library AugmentorLibrary {
             address(this),
             amount
         );
+
+        // if LUM is staked, do not return augmented token
+        if (asset == self.LUM) {
+            // set balance to return to user and add points
+            self.balances[recipient][asset] += amount;
+            self.points[recipient] += (price * amount) / 1e8;
+            return;
+        }
 
         // if augment asset does not exist, create one
         if (!_augmentExists(self, asset)) {
@@ -210,8 +224,8 @@ library AugmentorLibrary {
     // delegator functions
     function register(State storage self) internal {
         // check occupation
-        if (self.dIds[msg.sender] != 0) {
-            revert AlreadyOccupied(msg.sender, self.dIds[msg.sender]);
+        if (self.rIds[msg.sender] != 0) {
+            revert AlreadyOccupied(msg.sender, self.rIds[msg.sender]);
         }
 
         // Transfer required LUMs to register as validator
@@ -224,27 +238,29 @@ library AugmentorLibrary {
         );
 
         // Add delegator in the list
-        self.dCount += 1;
-        self.dIds[msg.sender] = self.dCount;
-        self.list[self.dCount] = self.lHead;
-        self.delegated[self.dCount] += 32e18;
-        self.lHead = self.dCount;
-        _enlist(self, self.dCount);
+        self.rCount += 1;
+        self.rIds[msg.sender] = self.rCount;
+        self.list[self.rCount] = self.lHead;
+        self.relayers[self.rCount].delegated += 32e18;
+        self.relayers[self.rCount].isOnline = true;
+        self.lHead = self.rCount;
+        _enlist(self, self.rCount);
     }
 
     function _enlist(State storage self, uint32 id) internal {
         if (self.lCount < 20) {
-            self.minDelegated = self.delegated[id] >= self.minDelegated
+            self.minDelegated = self.relayers[id].delegated >= self.minDelegated
                 ? self.minDelegated
-                : self.delegated[id];
+                : self.relayers[id].delegated;
             self.list[id] = self.lHead;
             self.lHead = id;
             self.lCount += 1;
             self.enlisted[id] = true;
             return;
         } else {
+            // TODO: 
             // if delegated amount is below minDelegated, stay out of the list
-            if (self.delegated[id] <= self.minDelegated) {
+            if (self.relayers[id].delegated <= self.minDelegated) {
                 // if the id is already included, take it out.
                 if (self.enlisted[id]) {
                     uint32 head = self.lHead;
@@ -267,20 +283,21 @@ library AugmentorLibrary {
                         }
                     }
                 } else {
+                    // relayer delegated is smaller than minDelegated when not enlisted. do nothing.
                     return;
                 }
             } else {
                 // find mindelegated id and remove
                 uint32 head = self.lHead;
                 uint32 last = 0;
-                if (self.delegated[head] == self.minDelegated) {
+                if (self.relayers[head].delegated == self.minDelegated) {
                     self.lHead = self.list[head];
                     self.list[head] = 0;
                     self.enlisted[head] = false;
                     return;
                 }
                 while (head != 0) {
-                    if (self.delegated[head] == self.minDelegated) {
+                    if (self.relayers[head].delegated == self.minDelegated) {
                         self.list[last] = self.list[head];
                         self.list[head] = 0;
                         self.enlisted[head] = false;
@@ -289,6 +306,14 @@ library AugmentorLibrary {
                         last = head;
                         head = self.list[head];
                     }
+                }
+                if (self.enlisted[id] || self.relayers[id].isOnline == false) {
+                    return;
+                } else {
+                    // add relayer id in head
+                    self.list[id] = self.lHead;
+                    self.lHead = id;
+                    self.enlisted[id] = true;
                 }
             }
         }
@@ -300,16 +325,16 @@ library AugmentorLibrary {
         uint256 amount
     ) internal returns (uint32 id) {
         // check if delegator exists
-        id = self.dIds[delegateTo];
+        id = self.rIds[delegateTo];
         if (id == 0) {
-            revert InvalidDelegator(delegateTo);
+            revert InvalidRelayer(delegateTo);
         }
         // check if amount exceeds point balance
         if (amount > self.points[msg.sender]) {
             revert AmountExceedsPoint(amount, self.points[msg.sender]);
         }
         self.points[msg.sender] -= amount;
-        self.delegated[id] += amount;
+        self.relayers[id].delegated += amount;
         self.total += amount;
         _enlist(self, id);
         return id;
@@ -321,12 +346,12 @@ library AugmentorLibrary {
         uint256 amount
     ) external returns (uint32 id) {
         // check if delegator exists
-        id = self.dIds[delegateTo];
+        id = self.rIds[delegateTo];
         if (id == 0) {
-            revert InvalidDelegator(delegateTo);
+            revert InvalidRelayer(delegateTo);
         }
         self.points[msg.sender] += amount;
-        self.delegated[id] -= amount;
+        self.relayers[id].delegated -= amount;
         self.total -= amount;
         _enlist(self, id);
         return id;
@@ -352,7 +377,7 @@ library AugmentorLibrary {
         }
 
         // get author
-        author = self.delegators[chunks[0] % self.lCount];
+        author = self.relayers[chunks[0] % self.lCount].account;
         // initialize the validators array with a length of 2
         uint32[] memory dIdQ = new uint32[](2);
         validators = new address[](2);
@@ -373,7 +398,7 @@ library AugmentorLibrary {
             self.list[last] = self.list[id];
             self.list[id] = 0;
             dIdQ[i] = id;
-            validators[i] = self.delegators[id];
+            validators[i] = self.relayers[id].account;
         }
 
         // shuffle picked indices by pushing front to the list
@@ -387,14 +412,48 @@ library AugmentorLibrary {
 
     function slash(State storage self, address delegator) internal {
         // slash points on delegator
-        self.delegated[self.dIds[delegator]] = 0;
+        self.relayers[self.rIds[delegator]].delegated = 0;
 
         // distribute slashed LUM to reporter for 1/8
 
         // confiscate delegator for 3 months
     }
 
-    function augmentOf(State storage self, address original) internal view returns (address augment) {
+    function setOnline(State storage self, uint32 rId, bool online) internal {
+        if (self.relayers[rId].account != msg.sender) {
+            revert NotRelayerAccount(msg.sender, self.relayers[rId].account);
+        }
+        if (online) {
+            // enlist relayer
+            _enlist(self, rId);
+        } else {
+            // find rId and remove
+            uint32 head = self.lHead;
+            uint32 last = 0;
+            if (self.relayers[head].account == msg.sender) {
+                self.lHead = self.list[head];
+                self.list[head] = 0;
+                self.enlisted[head] = false;
+                return;
+            }
+            while (head != 0) {
+                if (self.relayers[head].account == msg.sender) {
+                    self.list[last] = self.list[head];
+                    self.list[head] = 0;
+                    self.enlisted[head] = false;
+                    return;
+                } else {
+                    last = head;
+                    head = self.list[head];
+                }
+            }
+        }
+    }
+
+    function augmentOf(
+        State storage self,
+        address original
+    ) internal view returns (address augment) {
         return _predictAddress(self, original);
     }
 }
