@@ -4,8 +4,8 @@
 * [🔶 $LUM](lum/README.md)
   * [Proof of Stake (PoS)](lum/proof-of-stake-pos.md)
   * [Restaking](lum/restaking.md)
-  * [Inflation](lum/inflation.md)
   * [Membership](lum/membership.md)
+  * [Inflation](lum/inflation.md)
 * [🛣 Roadmap](roadmap.md)
 
 ## 🪙 Staking Guides
