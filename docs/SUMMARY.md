@@ -8,6 +8,7 @@
   * [Inflation](lum/inflation.md)
 * [⚖ Comparison](comparison.md)
 * [🛣 Roadmap](roadmap.md)
+* [👷♂ TEAM](team.md)
 
 ## 📐 Design
 
