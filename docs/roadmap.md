@@ -2,13 +2,13 @@
 
 ## Jan 2024
 
-Omnygram implementation in Solidity
+Lumina implementation in Solidity
 
 ## Feb 2024
 
-Omnygram contract audit
+Lumina contract audit
 
-Lumina client implementation&#x20;
+Lumina relayer client implementation&#x20;
 
 ## Mar 2024
 

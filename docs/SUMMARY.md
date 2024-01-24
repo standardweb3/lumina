@@ -8,6 +8,14 @@
   * [Inflation](lum/inflation.md)
 * [🛣 Roadmap](roadmap.md)
 
+## 📐 Design
+
+* [Augmented Assets](design/augmented-assets/README.md)
+  * [Fault Tolerance](design/augmented-assets/fault-tolerance.md)
+* [Intent](design/intent.md)
+* [Omnygram](design/omnygram/README.md)
+  * [Paper](design/omnygram/paper.md)
+
 ## 🪙 Staking Guides
 
 * [Create Account](staking-guides/create-account.md)
@@ -27,11 +35,3 @@
 
 * [Audits](security/audits.md)
 * [Bug Bounty Program](security/bug-bounty-program.md)
-
-## 📐 Design
-
-* [Augmented Assets](design/augmented-assets/README.md)
-  * [Fault Tolerance](design/augmented-assets/fault-tolerance.md)
-* [Intent](design/intent.md)
-* [Omnygram](design/omnygram/README.md)
-  * [Paper](design/omnygram/paper.md)
