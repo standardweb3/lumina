@@ -12,7 +12,7 @@ Lumina upholds its censorship resistance while maintaining a vigilant stance aga
 
 ### Liquidity in a Decentralized Orderbook Exchange
 
-Lumina strategically provides liquidity through a decentralized orderbook exchange, steering clear of vulnerabilities associated with Automated Market Makers (AMMs). This approach prevents hackers from draining pools in pairs by utilizing a fully decentralized orderbook exchange from [Standard](https://standardweb3.com). Lumina's design makes it challenging for malicious actors to liquidate oversupplied bridged tokens into other assets, particularly after users cancel orders in the orderbook. This liquidity provision strategy enhances the security and stability of Lumina's asset ecosystem.
+Lumina strategically provides liquidity through a decentralized orderbook exchange, steering clear of vulnerabilities associated with Automated Market Makers (AMMs). This approach prevents hackers from draining pools in pairs by utilizing a fully decentralized orderbook exchange from [Standard](https://docs.standardweb3.com/standard/apps/master/what-is-standard-exchange). Lumina's design makes it challenging for malicious actors to liquidate oversupplied bridged tokens into other assets, particularly after users cancel orders in the orderbook. This liquidity provision strategy enhances the security and stability of Lumina's asset ecosystem.
 
 ### Decentralized Maintenance
 
