@@ -1,6 +1,7 @@
 # Table of contents
 
 * [✨ Lumina](README.md)
+* [⚖ Comparison](comparison.md)
 * [🔶 $LUM](lum/README.md)
   * [Proof of Stake (PoS)](lum/proof-of-stake-pos.md)
   * [Restaking](lum/restaking.md)
