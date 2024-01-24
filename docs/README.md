@@ -34,4 +34,4 @@ Stake your native coins or ERC20 tokens to augment into Lum assets, transfer to 
 
 Expand exposure to capital without permissioned bridges, and get $LUM as staking reward for keeping decentralized bridge.
 
-Always claim back your original asset with no worries in your personal account.
+Don't lose assets you staked, lose points for $LUM rewards. You can always claim back your original asset with no worries in your personal account.
