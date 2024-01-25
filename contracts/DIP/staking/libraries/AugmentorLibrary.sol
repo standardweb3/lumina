@@ -17,10 +17,19 @@ interface IAugment {
 }
 
 library AugmentorLibrary {
+    struct Origin {
+        uint256 chainId;
+        address source;
+    }
     struct Relayer {
+        /// relaying wallet
         address account;
+        /// delegated amount of point
         uint256 delegated;
+        /// is relayer online
         bool isOnline;
+        /// commission rate percentage(%) with 3 decimals
+        uint32 commission;
     }
     struct State {
         /// address of LUM
@@ -56,6 +65,8 @@ library AugmentorLibrary {
         uint32 rCount;
         /// confisticated until
         mapping(uint32 => uint64) confiscated;
+        /// originals
+        mapping(address => Origin) origins;
     }
 
     // errors
@@ -63,6 +74,7 @@ library AugmentorLibrary {
     error InvalidAccess(address sender, address owner);
     error AugmentAlreadyExists(address original, address augment);
     error AmountExceedsBalance(uint256 amount, uint256 balance);
+    error DoubleAugment(address augmented, uint256 chainId, address original);
     /// relayers
     error InvalidRelayer(address delegateTo);
     error AlreadyOccupied(address delegator, uint32 dId);
@@ -75,7 +87,7 @@ library AugmentorLibrary {
         State storage self,
         address original
     ) internal view returns (bool) {
-        address augment = _predictAddress(self, original);
+        address augment = _predictAddress(self, block.chainid, original);
 
         // Check if the address has code
         uint32 size;
@@ -92,15 +104,15 @@ library AugmentorLibrary {
 
     function _createAugment(
         State storage self,
-        address original
+        address source
     ) internal returns (address augment) {
-        if (_augmentExists(self, original)) {
-            revert AugmentAlreadyExists(original, augment);
+        if (_augmentExists(self, source)) {
+            revert AugmentAlreadyExists(source, augment);
         }
 
         // Build constructor args
-        string memory symbol = IAugment(original).symbol();
-        string memory name = IAugment(original).name();
+        string memory symbol = IAugment(source).symbol();
+        string memory name = IAugment(source).name();
         symbol = string(abi.encodePacked("Lum", symbol));
         name = string(abi.encodePacked("Lumina ", name));
 
@@ -108,9 +120,11 @@ library AugmentorLibrary {
 
         address proxy = CloneFactory._createCloneWithSaltOnConstructor(
             self.impl,
-            _getSalt(original),
+            _getSalt(block.chainid, source),
             args
         );
+
+        self.origins[proxy] = Origin(block.chainid, source); 
 
         return (proxy);
     }
@@ -131,15 +145,16 @@ library AugmentorLibrary {
 
     function _predictAddress(
         State storage self,
-        address original
+        uint256 chainId,
+        address source
     ) internal view returns (address) {
-        bytes32 salt = _getSalt(original);
+        bytes32 salt = _getSalt(chainId, source);
         return
             CloneFactory.predictAddressWithSalt(address(this), self.impl, salt);
     }
 
-    function _getSalt(address original) internal pure returns (bytes32) {
-        return keccak256(abi.encodePacked(original));
+    function _getSalt(uint256 chainId, address source) internal pure returns (bytes32) {
+        return keccak256(abi.encodePacked(chainId, source));
     }
 
     function stake(
@@ -148,6 +163,11 @@ library AugmentorLibrary {
         uint256 amount,
         address recipient
     ) internal {
+        // check if one is staking an augmented asset(double-augmenting)
+        Origin memory orgn = self.origins[asset];
+        if(orgn.source != address(0)) {
+            revert DoubleAugment(asset, orgn.chainId, orgn.source);
+        }
         // check if the asset pair between ETH exists in exchange
         uint256 price = asset == self.LUM
             ? 1
@@ -182,7 +202,7 @@ library AugmentorLibrary {
             self.points[recipient] += (price * amount) / 1e8;
             IAugment(augment).mint(recipient, amount);
         } else {
-            address augment = _predictAddress(self, asset);
+            address augment = _predictAddress(self, block.chainid, asset);
             // mint asset to recipient
             self.balances[recipient][asset] += amount;
             self.points[recipient] += (price * amount) / 1e8;
@@ -452,8 +472,16 @@ library AugmentorLibrary {
 
     function augmentOf(
         State storage self,
+        uint256 chainId,
         address original
     ) internal view returns (address augment) {
-        return _predictAddress(self, original);
+        return _predictAddress(self, chainId, original);
+    }
+
+    function originalOf(
+        State storage self,
+        address augmented
+    ) internal view returns (Origin memory original) {
+        return self.origins[augmented];
     }
 }

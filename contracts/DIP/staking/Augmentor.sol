@@ -104,6 +104,11 @@ contract Augmentor is ReentrancyGuard {
         _augmentor.authorize();
     }
 
+    // Online functions
+    function setOnline(uint32 rId, bool online) external {
+        _augmentor.setOnline(rId, online);
+    }
+
     // Penalty functions
 
 
@@ -111,5 +116,9 @@ contract Augmentor is ReentrancyGuard {
     // view functions
     function augmentOf(address original) external view returns (address augment) {
         return _augmentor.augmentOf(original);
+    }
+
+    function rIdOf(address account) external view returns (uint32 rId) {
+        
     }
 }
