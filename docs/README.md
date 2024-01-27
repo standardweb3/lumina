@@ -4,7 +4,7 @@ description: Illuminate opportunities across Ethereum layer 2 ecosystem and beyo
 
 # ✨ Lumina
 
-Lumina is the first Byzantine Fault Tolerant bridge to augment assets across blockchains with fail-safe mechanism. It is the smart contract protocol to pass not only assets, but also any messages or transactions to execute remotely to construct intent.
+Lumina is the first Byzantine Fault Tolerant bridge to augment assets across blockchains with fail-safe mechanism with **liquid staking derivatives(LSD)**. It is the smart contract protocol to pass not only assets, but also any messages or transactions to execute remotely for intents.
 
 ## Features
 
