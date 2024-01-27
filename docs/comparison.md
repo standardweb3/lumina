@@ -8,5 +8,7 @@ Unlike other liquid staking projects, Lumina utilizes liquid staking combined wi
 
 ## Bridge
 
+<figure><img src=".gitbook/assets/image (10).png" alt=""><figcaption></figcaption></figure>
+
 Unlike other bridges, Lumina has a failsafe layer with [augmentation](design/augmented-assets/). It protects stakers from hacking original asset with the other wrapped bridge assets.&#x20;
 
