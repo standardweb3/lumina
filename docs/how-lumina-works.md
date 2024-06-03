@@ -1,5 +1,3 @@
 # 👷‍♂️ How Lumina works
 
-
-
-{% embed url="https://youtu.be/8o0ZoTy6qxU" %}
+{% embed url="https://www.youtube.com/watch?v=8o0ZoTy6qxU&feature=youtu.be" %}
