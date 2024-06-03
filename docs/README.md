@@ -10,7 +10,7 @@ Lumina is the first Byzantine Fault Tolerant bridge to augment assets across blo
 
 ### **No more wrapping.**
 
-<figure><img src=".gitbook/assets/no-more-wrapping.png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/before_and_after.png" alt=""><figcaption></figcaption></figure>
 
 Get augmented assets only once as derivative by staking, transfer it to every chains.
 
@@ -28,7 +28,7 @@ Lumina is an cross-chain intent platform where it enables users to earn the maxi
 
 ### Stake your assets, move derivatives everywhere, get $LUM as reward.
 
-<figure><img src=".gitbook/assets/staking.png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/lum.png" alt=""><figcaption></figcaption></figure>
 
 Stake your native coins or ERC20 tokens to augment into Lum assets, transfer to any network across blockchains.
 

@@ -1,14 +1,15 @@
 # Table of contents
 
 * [✨ Lumina](README.md)
+* [👷‍♂️ How Lumina works](how-lumina-works.md)
 * [🔶 $LUM](lum/README.md)
   * [Proof of Stake (PoS)](lum/proof-of-stake-pos.md)
   * [Restaking](lum/restaking.md)
   * [Membership](lum/membership.md)
   * [Inflation](lum/inflation.md)
-* [⚖ Comparison](comparison.md)
-* [🛣 Roadmap](roadmap.md)
-* [👷♂ Team](team.md)
+* [⚖️ Comparison](comparison.md)
+* [🛣️ Roadmap](roadmap.md)
+* [👷‍♂️ Team](team.md)
 
 ## 📐 Design
 
