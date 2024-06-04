@@ -16,7 +16,7 @@ Get augmented assets only once as derivative by staking, transfer it to every ch
 
 ### Protect your assets from bridge hack with personal account.
 
-<figure><img src=".gitbook/assets/augmented (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src=".gitbook/assets/teleport.png" alt=""><figcaption></figcaption></figure>
 
 Only you can claim back your original assets unlike other bridges with your personal account. Stop from hackers stealing your wealth from hacking other wrapped assets in bridges.
 

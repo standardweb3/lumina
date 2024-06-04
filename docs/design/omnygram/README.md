@@ -2,7 +2,7 @@
 
 ## What is Omnygram?
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/lum-omnygram.png" alt=""><figcaption></figcaption></figure>
 
 Omnygram is the unified datagram standard to communicate between blockchain. It enables to execute transactions across blockchains from bottom-up approach.
 
